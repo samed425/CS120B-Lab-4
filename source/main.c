@@ -99,7 +99,7 @@ int main(void)
     DDRB = 0xFF; PORTB = 0x00;
     DDRC = 0xFF; PORTC = 0x00;
     
-    state = Start;
+    state = INIT;
         
     while (1)
     {
