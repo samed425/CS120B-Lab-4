@@ -16,6 +16,7 @@ enum States{INIT, s0, s1, s2, s3, s4}state;
 void Tick(){
     switch(state){
         case INIT:
+            PORTB = 0x01;
             state = s0;
             break;
 
@@ -23,91 +24,82 @@ void Tick(){
             if(PINA == 0x01){
                 state = s1;
             }
-            else if(PINA == 0x02){
-                state = s2;
-            }
-            else if(PINA == 0x03){
-                state = s4;
-            }
             else{
                 state = s0;
             }
             break;
 
         case s1:
-            state = s3;
-            break;
-
-        case s2:
-            state = s3;
+            if(PINA == 0x00){
+                state = s3;
+            }
+            else{
+                state = s1;
+            }
             break;
 
         case s3:
-            if((PINA == 0x01) || (PINA == 0x02)){
+            if(PINA == 0x01){
+                state = s2;
+            }
+            else{
                 state = s3;
             }
-            else if(PINA == 0x03){
+            break;
+
+        case s2:
+            if(PINA == 0x00){
                 state = s4;
             }
             else{
-                state = s0;
+                state = s2;
             }
             break;
 
         case s4:
-            if((PINA == 0x01) || (PINA == 0x02)){
-                state = s4;
+            if(PINA == 0x01){
+                state = s1;
             }
             else{
-                state = s0;
+                state = s4;
             }
             break;
 
         default:
             break;
-
     }
+
     switch(state){
         case INIT:
-            PORTC = 0x07;
             break;
 
         case s0:
+            PORTB = 0x01;
             break;
 
         case s1:
-            if(PORTC >= 0x09){
-                PORTC = 0x09;
-            }
-            else{
-                PORTC += 0x01;
-            }
-            break;
-
-        case s2:
-            if(PORTC <= 0x00){
-                PORTC = 0x00;
-            }
-            else{
-                PORTC -= 0x01;
-            }
+            PORTB = 0x02;
             break;
 
         case s3:
             break;
 
+        case s2:
+            PORTB = 0x01;
+            break;
+
         case s4:
-            PORTC = 0x00;
             break;
 
         default:
             break;
+        
     }
 }
 
 void main(){
     DDRA = 0x00; PORTA = 0xFF;
-    DDRC = 0xFF; PORTC = 0x07;
+    DDRB = 0xFF; PORTB = 0x00;
     state = INIT;
     
     while(1){
@@ -115,4 +107,3 @@ void main(){
     }
     return 0;
 }
-
