@@ -33,13 +33,17 @@ continue 2
 expectPORTB 0x00
 checkResult
 
-test "PINA: 0x02, 0x04  => PORTB: 0x01"
+test "PINA: 0x04, 0x02  => PORTB: 0x01"
 set state = s0
-setPINA 0x02
-continue 2
 setPINA 0x04
 continue 2
-expectPORTB 0x001
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x00
+continue 2
+expectPORTB 0x01
 checkResult
 
 
